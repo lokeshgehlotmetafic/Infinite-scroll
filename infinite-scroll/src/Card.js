@@ -4,30 +4,39 @@ export default function Card() {
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
 
-  const apiCall = (Num) => {
-    fetch(`https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${Num}`)
+  const apiCall = useCallback(() => {
+    fetch(
+      `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${count}`
+    )
       .then((response) => response.json())
-      .then((data) => {setData(data.hits);});
-      setCount((prev) => prev + 1);
-  };
+      .then((data) => {
+        setData((prevData) => [...prevData, ...data.hits]);
+      });
+  }, [count]);
 
-  const fn = function () {
-    if (window.innerHeight + Math.floor(document.documentElement.scrollTop) === document.scrollingElement.scrollHeight) {
-      apiCall(count + 1);
+  const fn = useCallback(() => {
+    if (
+      window.innerHeight + Math.floor(document.documentElement.scrollTop) ===
+      document.scrollingElement.scrollHeight
+    ) {
+      setCount((prev) => prev + 1);
     }
-  };
+  }, [count]);
 
   useEffect(() => {
-    apiCall(0);
+    apiCall();
+  }, [apiCall]);
+
+  useEffect(() => {
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
-  }, []);
+  }, [fn]);
 
   return (
     <div>
       {data.map((res) => {
         return (
-          <div key={res.id}>
+          <div key={res.objectID}>
             <h4>{res.title}</h4>
             <p>{res.author}</p>
           </div>
