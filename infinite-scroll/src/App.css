@@ -1,0 +1,15 @@
+*{
+  background-color: blanchedalmond;
+  margin-inline: 50px;
+}
+
+.App {
+  text-align: center;
+}
+
+.search-box{
+  width: 80%;
+  height: 50px;
+  margin-top: 20px;
+  
+}
