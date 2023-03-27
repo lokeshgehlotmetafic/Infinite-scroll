@@ -1,12 +1,17 @@
 import './App.css';
 import Card from './Card';
-import Searchbar from './Searchbar';
+import ParticularData from './Particulardata';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <Searchbar/>
-      <Card/>
+     <BrowserRouter>
+      <Routes>
+          <Route path="/" exact  element={<Card />} />
+          <Route path = "particular-data" element={<ParticularData/>} />       
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }
